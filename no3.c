@@ -69,7 +69,7 @@ void* playandcount(void *arg)
 	
 	while(1){
 	
-	if(agmal >=100){
+	if(iraj <=0){
 
 		printf("Iraj Ikut Tidur,Dan Bangun Kesiangan Bersama Agmal");	
 		exit(0);	
