@@ -1,4 +1,4 @@
-## 1.SOAL1
+## 1.SOAL3
 Agmal dan Iraj merupakan 2 sahabat yang sedang kuliah dan hidup satu kostan, 
 sayangnya mereka mempunyai gaya hidup yang berkebalikan, dimana Iraj merupakan laki-laki yang sangat sehat,
 rajin berolahraga dan bangun tidak pernah kesiangan sedangkan Agmal hampir menghabiskan setengah umur hidupnya hanya untuk tidur 
@@ -87,3 +87,140 @@ if(iraj <=0){
 		exit(0);	
 		}
 ```
+
+## 2. no2
+membuat client server dari pembeli dan penjual
+-client pembeli
+ketika scan "beli" maka akan di send ke server dan menerima pesan dari server pembeli.
+-server pemebeli
+meread beli, ketika stok masi ada maka jumlah -1 dan mengirim pesan pada client bahwa telah terbeli
+
+-client penjual
+ketika scan "tambah" maka akan di send ke server, menerima pesan dari server dan meng-print stok yang ada setiap 5 detik
+-server penjual
+meread tambah, maka jumlah +1dan mengirim pesan berhasil menambah pada client
+
+## 3. no1
+fungsi faktorial
+```
+void* factorial(void* arg)
+{
+    int* nump = (int*) arg; //mengcasting mnjdi integer
+    int num = *nump;//nilai num
+    int i;
+    unsigned long long facto = 1;
+    for( i=num; i>0; i--){//faktorisasi
+        facto = facto*i;
+    }
+    hasil[num] = facto;//hasil faktorial dimasukkan ke array hasil
+}
+```
+fungsi swap
+```
+void swap(int *a, int *b)//template swap
+{
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+```
+fungsi selectionsort
+```
+void selectionSort(int arr[], int size)//templtae SelectionSort
+{
+    int i, j;
+    for (i = 0 ;  i < size;i++)
+    {
+        for (j = i ; j < size; j++)
+        {
+            if (arr[i] > arr[j])
+                swap(&arr[i], &arr[j]);
+        }
+    }
+}
+```
+main
+```
+int main(int argc, char *argv[])
+{//argc: menghitung jumlah input, //argv: menyimpan input 
+    int n;
+    n = argc-1; //inputan
+    pthread_t tid[n];//membuat thread sesuai inputan
+    int i;
+    int ar[n];
+    for(i=0;i<n;i++){
+       ar[i] = atoi(argv[i+1]);//mengambil inputan tanpa ./blabla, atau asci to integer
+    }
+    for(i=0;i<n;i++){
+        pthread_create(&tid[i],NULL,&factorial,&ar[i]);
+    }
+    for(i=0;i<n;i++){
+        pthread_join(tid[i],NULL);
+    }
+    selectionSort(ar,n);//memanggil fungsi selectionsort
+    for(i=0;i<n;i++){
+        printf("%d! = %llu\n",ar[i],hasil[ar[i]]);
+    }//mengoutputkan nilai faktorial pada setiap thread
+    
+}
+
+```
+## 4. no4
+ntuk membuat FolderProses1 (folder) dan SimpanProses1.txt (file proses)
+menyimpan list proses yang sedang berjalan (ps -aux)  10 list prosesA
+```
+void* proses1(){
+	system("mkdir -p ~/Documents/FolderProses1");
+	system("ps -aux|head -10>>~/Documents/FolderProses1/SimpanProses1.txt");
+}
+
+void* proses2(){
+	system("mkdir -p ~/Documents/FolderProses2");
+	system("ps -aux|head -10>>~/Documents/FolderProses2/SimpanProses2.txt");
+}
+```
+untuk membuat zip dan ekstrak zip tersebut
+```
+void* zip1(){
+	system("zip -j ~/Documents/FolderProses1/KompresProses1.zip ~/Documents/FolderProses1/SimpanProses1.txt");
+	system("rm ~/Documents/FolderProses1/SimpanProses1.txt");
+	sleep(15);
+
+		printf("Menunggu 15 detik untuk mengekstrak kembali\n");
+		system("unzip ~/Documents/FolderProses1/KompresProses1.zip -d ~/Documents");
+		system("rm ~/Documents/FolderProses1/KompresProses1.zip");
+	
+}
+
+void* zip2(){
+	system("zip -j ~/Documents/FolderProses2/KompresProses2.zip ~/Documents/FolderProses2/SimpanProses2.txt");
+	system("rm ~/Documents/FolderProses2/SimpanProses2.txt");
+	sleep(15);
+```
+
+Ketika Telah Selesai melakukan kompress file .zip masing-masing file, maka program akan memberi pesan “Menunggu 15 detik untuk mengekstrak kembali”
+```
+		printf("Menunggu 15 detik untuk mengekstrak kembali\n");
+		system("unzip ~/Documents/FolderProses2/KompresProses2.zip -d ~/Documents");
+		system("rm ~/Documents/FolderProses2/KompresProses2.zip");
+	
+}
+```
+main
+```
+int main()
+{
+//Multithreading
+	pthread_create(&(tid[0]),NULL,&proses1,NULL);
+	pthread_join(tid[0],NULL);
+	pthread_create(&(tid[1]),NULL,&proses2,NULL);
+	pthread_join(tid[1],NULL);
+	pthread_create(&(tid[0]),NULL,&zip1,NULL);
+	pthread_create(&(tid[1]),NULL,&zip2,NULL);
+	pthread_join(tid[0],NULL);
+	pthread_join(tid[1],NULL);
+}
+```
+## no5 soal5
+penjelasan ada di file, di commentnya
